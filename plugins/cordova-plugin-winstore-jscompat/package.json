@@ -1,0 +1,52 @@
+{
+  "_from": "cordova-plugin-winstore-jscompat",
+  "_id": "cordova-plugin-winstore-jscompat@0.0.6",
+  "_inBundle": false,
+  "_integrity": "sha1-jNFZnL2Vtv9QP1VUih6UG4+nSaI=",
+  "_location": "/cordova-plugin-winstore-jscompat",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-winstore-jscompat",
+    "name": "cordova-plugin-winstore-jscompat",
+    "escapedName": "cordova-plugin-winstore-jscompat",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-winstore-jscompat/-/cordova-plugin-winstore-jscompat-0.0.6.tgz",
+  "_shasum": "8cd1599cbd95b6ff503f55548a1e941b8fa749a2",
+  "_spec": "cordova-plugin-winstore-jscompat",
+  "_where": "D:\\ALL_PROJECT\\Domestic",
+  "author": {
+    "name": "whins"
+  },
+  "bugs": {
+    "url": "https://github.com/whins/cordova-plugin-winstore-jscompat/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "A plugin that includes a compatibility library for Windows Phone 8.1 apps",
+  "homepage": "https://github.com/whins/cordova-plugin-winstore-jscompat#readme",
+  "keywords": [
+    "cordova",
+    "plugin",
+    "winstore",
+    "jscompat"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "cordova-plugin-winstore-jscompat",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whins/cordova-plugin-winstore-jscompat.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.6"
+}

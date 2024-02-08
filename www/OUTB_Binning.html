@@ -1,0 +1,325 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=0">
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script src="bootstrap/js/jquery-1.12.0.min.js"></script>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <link href="css/style.css" rel="stylesheet" />
+    <!--<script src="scripts/custom.js"></script>
+    <link href="css/custom.css" rel="stylesheet" />-->
+    <link href="css/sticky-footer.css" rel="stylesheet" />
+    <!--<script src="scripts/Jquery-Mobile-1.4.5.js"></script>-->
+    <script src="scripts/LoadingModel.js"></script>
+    <script src="scripts/LoaderShow-Hide.js"></script>
+    <script src="scripts/Login.js"></script>
+    <script src="scripts/dialog.js"></script>
+    <script src="js/General.js"></script>
+    <link href="css/General.css" rel="stylesheet" />
+    <script src="scripts/alert.mob.js"></script>
+    <!--<link href="css/JqueryMobile_1.4.5.css" rel="stylesheet" />-->
+    <link href="css/Loader.css" rel="stylesheet" />
+    <link href="css/dialog.css" rel="stylesheet" />
+    <link href="css/alert.mob.css" rel="stylesheet" />
+    <script src="js/Export/OUTB_Binning.js"></script>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 5px;
+        }
+
+        th {
+            text-align: center;
+            background-color: #c2eaf7;
+        }
+
+        tr {
+            text-align: center;
+            background-color: #ddffd3;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header" style="background-color:#065da1;">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" id="btnnavbar" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;"></a>
+                <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
+                <a href="#" id="navhdr" class="loggedinUser"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid" style="margin-top:63px;">
+        <div class="panel-body">
+            <div class="panel panel-widget forms-panel form-grids widget-shadow" style="" id="divULDDetails">
+                <div class="forms">
+                    <div class="form-body">
+                        <form>
+                            <div class="row">
+                                <!-- <div class="row form-group" style="margin-top:5px;"> -->
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <!--<input type="radio" name="AWBNo" id="rdoULD" value="U"   />
+                                        <label for="sizeLarge">ULD No.</label>
+                                        <input type="radio" name="AWBNo" id="rdoAWBNo"  value="A" />
+                                        <label for="sizeSmall">AWB No.</label>-->
+                                        <label for="txtAWBNo">AWB No.</label>
+                                    </div>
+
+                                    <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+                                        <!--<input id="txtAWBNo" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '12');">-->
+                                        <input id="txtAWBNo" class="form-control"
+                                               style="text-align:right;" onblur="GetExportBinningDetails();" autofocus oninput="    javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                               type="number"
+                                               maxlength="11">
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <input type="button" id="getDetails" class="form-control ButtonColor" value="GET DETAILS" onclick="GetExportBinningDetails();">
+                                    </div>
+                                    <div class="col-xs-2 col-form-label">
+
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="divULDText">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label for="txtOrigin">Origin/Dest.</label>
+                                    </div>
+                                    <div class="col-xs-3 NoPadding">
+                                        <input id="txtOrigin" class="form-control" type="text" maxlength="3" disabled>
+                                    </div>
+                                    <div class="col-xs-3 NoPadding">
+                                        <input id="txtDest" class="form-control" type="text" maxlength="5" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label for="txtCommodity">Commodity</label>
+                                    </div>
+
+                                    <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+                                        <input id="txtCommodity" disabled class="form-control" type="text" style="" onkeyup="ChkMaxLength(this, '9');">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label for="txtBinnedTotalPkgs">Binned/Total Pkgs</label>
+                                    </div>
+
+                                    <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+                                        <input id="txtBinnedTotalPkgs" disabled class="form-control" type="text" style="text-align:right;" onkeyup="ChkMaxLength(this, '9');">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <div class="col-xs-6 col-form-label">
+                                    <label for="txtlocation">Location</label>
+                                    <font color="red">*</font>
+                                </div>
+                                <div class="col-xs-6 col-form-label">
+                                    <label for="txtbinnPkgs">Binn Pkgs</label>
+                                    <font color="red">*</font>
+                                </div>
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                <div class="col-xs-6 NoPadding">
+                                    <input id="txtlocation" class="form-control" type="text">
+                                </div>
+                                
+                                <div class="col-xs-6 NoPadding">
+                                    <input id="txtbinnPkgs" class="form-control" type="text" style="text-align:right;">
+
+                                </div>
+                            </div>
+                            <!--<div class="panel panel-widget forms-panel form-grids widget-shadow" style="margin: 0%">
+                                <div class="forms">
+                                    <div class="form-body">
+                                        <form>
+                                            <div class="row form-group">
+                                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                                    <div class="col-xs-6 col-form-label">
+                                                        <label for="txtFlightNo">Location</label>
+                                                        <font color="red">*</font>
+                                                    </div>
+                                                    <div class="col-xs-6 col-form-label">
+                                                        <label for="txtFlightNo">Binn Pkgs</label>
+                                                        <font color="red">*</font>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+
+                                                    <div class="col-xs-5 NoPadding">
+                                                        <input id="location" class="form-control" type="text">
+                                                    </div>
+                                                    <div class="col-xs-1 NoPadding">
+                                                    </div>
+                                                    <div class="col-xs-6 NoPadding">
+                                                        <input id="binnPkgs" class="form-control" type="text">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>-->
+
+                            <div class="row form-group" style="margin-top:10px;">
+                                <div class="col-xs-4 NoPadding">
+                                    <input type="button" id="btnSubmit" class="form-control ButtonColor" value="Submit" onclick="calLocationRows();">
+                                </div>
+                                <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                                    <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearBeforePopulate();">
+                                </div>
+                                <div class="col-xs-4 NoPadding">
+                                    <input type="button" id="btnExit" class="form-control ButtonColor" value="Exit" onclick="window.location.href = 'EXP_Dashboard.html'">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-widget forms-panel form-grids widget-shadow" id="divAddAWBDetails" style="display:none">
+                <div class="forms">
+                    <div class="form-body">
+                        <form>
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label for="txtULDNo">ULD No.</label>
+                                    </div>
+                                    <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+                                        <input id="txtULDNo" class="form-control" type="text" maxlength="6" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label for="txtAWBNo">AWB No.</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <!--<div class="col-xs-2" style="padding-left:0px;padding-right:0px;">
+                                        <input id="txtAWBPrefix" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '3'); countChar(this, '3');" name="textbox[]">
+                                    </div>-->
+                                    <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+                                        <input id="txtAWBNo" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '11');" onblur="GetShipmentInfoForAWB($('#txtAWBNo').val());" name="textbox[]">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label id="lblUnitizedTotalPkgs" for="txtReceivedRemainingPkgs" class="control-label labelFont">Unitized/Total Pkgs</label>
+                                    </div>
+                                    <div class="col-xs-3 NoPadding">
+                                        <input type="number" style="text-align:right;" id="txtUnitizedPkgs" class="form-control" onkeyup="ChkMaxLength(this, '7');" disabled>
+                                    </div>
+                                    <div class="col-xs-3 NoPadding">
+                                        <input type="number" style="text-align:right;" id="txtTotalPkgs" class="form-control" onkeyup="ChkMaxLength(this, '7');" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label for="txtPackages">Packages</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+                                        <input id="txtPackages" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '4'); NumberOnly(event);" onchange="CalculateProrataWtVol()">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="display:none">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label for="txtGrossWt">Gross Wt.</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-4" style="padding-left:0px;padding-right:0px;">
+                                        <!--<input id="txtGrossWt" class="form-control" type="text" style="text-align:right;">-->
+                                        <input id="txtWeight" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '7');" disabled>
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <select class="form-control" id="ddlGrossWtUnit" disabled>
+                                            <option value="0">KG</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="display:none">
+                                    <div class="col-xs-6 col-form-label">
+                                        <label for="txtVolume">Volume</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-6" style="padding-left:0px;padding-right:0px;">
+                                        <input id="txtVolume" class="form-control" type="number" style="text-align:right;" onkeyup="ChkMaxLength(this, '7');">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 5px;">
+                                <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                                    <input type="button" id="btnSave" class="form-control ButtonColor" value="Submit" onclick="GetExportBinningDetails();">
+                                </div>
+                                <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                                    <input type="button" id="btnExit" class="form-control ButtonColor" value="Back" onclick="ShowULDGrid();">
+                                </div>
+                                <div class="form-group col-xs-4 col-sm-4 col-md-4">
+                                    <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear" onclick="clearBeforePopulate()">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--<table style="width:100%">
+                <tr>
+                    <th>Location</th>
+                    <th>Binned Pkgs.</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>-->
+            <div id="divAddTestLocation">
+            </div>
+        </div>
+    </div>
+    <div>
+        <footer class="footer" style="color: white; font-size :12px; background-color:#0967b0;">
+            <div class="container">
+                <center><p class="text-muted" id="RightsReserved"></p></center>
+            </div>
+        </footer>
+    </div>
+</body>
+<script language="javascript" type="text/javascript">
+    $('#RightsReserved').text(' \xA9 Kale Logistics Solutions Private Limited. ' + (new Date).getFullYear().toString());
+</script>
+</html>

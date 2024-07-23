@@ -23,6 +23,7 @@ var gridXMLforShow;
 var strAction;
 var Isdata;
 var Message = "";
+var locationList = [];
 var _xmlDocTableDynamic;
 document.addEventListener("pause", onPause, false);
 document.addEventListener("resume", onResume, false);
@@ -287,6 +288,8 @@ $(function () {
     //var stringos = 'ECC~N,PER~N,GEN~N,DGR~Y,HEA~N,AVI~N,BUP~Y,EAW~N,EAP~Y';
 
     //SHCSpanHtml(stringos);
+
+    GetLocationsFromMaster();
 });
 
 function SHCSpanHtml(newSHC) {
@@ -404,6 +407,8 @@ function dynamicTrCreate() {
 
     newTextBoxDiv.appendTo("#TextBoxesGroup");
     counter++;
+
+    $(".textpackges").autocomplete({ source: locationList });
 }
 
 function removeRow(counter) {
@@ -646,9 +651,12 @@ function GetAWBDetails() {
                         );
 
                         if (counter == index) {
+
                             newTextBoxDiv.appendTo("#TextBoxesGroup");
                             counter++;
                         }
+
+
 
                         //  $('<tr id="Trdynamic" class="valp"></tr>').html('<td><input id="txtLocationCode0" value="' + LOC_CODE + '" class="loc_input form-control pnlTextBox" type="text" maxlength="20"></td><td><input value="' + pcs + '" id="pieces0" onkeyup="NumberOnly(event);" class="pieces_input form-control pnlTextBox text-right"  type="text" maxlength="20"></td><td><input type="button" id="addBtnForLocation" style="margin-bottom: 5px;" value="Delete" class="btnAdd form-control ButtonColor" /></td><td style="display:none"><input type="hidden" value="' + LocationRowID + '"</td>').appendTo('#addLocation');
 
@@ -664,6 +672,10 @@ function GetAWBDetails() {
 
                         //});
                     });
+
+
+
+                /* newTextBoxDiv.find('input').autocomplete(locationList);*/
 
                 if (Isdata == false) {
                     newTextBoxDiv = $(document.createElement("tr")).attr(
@@ -713,6 +725,8 @@ function GetAWBDetails() {
                             return;
                         }
                     });
+
+                $(".textpackges").autocomplete({ source: locationList });
             },
             error: function (msg) {
                 $("body").mLoading("hide");
@@ -835,6 +849,95 @@ function SaveAcceptance() {
                         $.alert(errmsg);
                         return;
                     });
+            },
+            error: function (msg) {
+                $("body").mLoading("hide");
+                $.alert("Data could not be loaded");
+            },
+        });
+        return false;
+    } else if (connectionStatus == "offline") {
+        $("body").mLoading("hide");
+        $.alert("No Internet Connection!");
+    } else if (errmsg != "") {
+        $("body").mLoading("hide");
+        $.alert(errmsg);
+    } else {
+        $("body").mLoading("hide");
+    }
+}
+
+
+function GetLocationsFromMaster() {
+
+
+    var connectionStatus = navigator.onLine ? "online" : "offline";
+
+    var errmsg = "";
+    // var strDimentionType = $("#ddlAccCMIN").val().toString() + "~" + $("#txtAccVolWt").val().toString();
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: "POST",
+            url: GHAserviceURL + "GetLocationsFromMaster",
+            data: JSON.stringify({
+                strUserId: UserId,
+                strVal: deviceUUID
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (Result) {
+                Result = Result.d;
+                var xmlDoc = $.parseXML(Result);
+                //console.log("save console");
+                console.log(xmlDoc);
+                _xmlDocTable = xmlDoc;
+                locationList = [];
+                $(xmlDoc).find('Table').each(function () {
+
+                    var ID = $(this).find('ID').text();
+                    var Name = $(this).find('Name').text();
+
+                    locationList.push({ 'label': Name });
+
+                });
+
+                if (locationList.length > 0) {
+                    $("#txtLocationCode0").autocomplete({
+                        minLength: 0,
+                        source: locationList,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            $("#txtLocationCode0").focus();
+                            $("#txtLocationCode0").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtLocationCode0").val(ui.item.label);
+
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtLocationCode0").focus(function () {
+                        $(this).autocomplete("search", $(this).val());
+                    });
+                }
+                //$(xmlDoc)
+                //    .find("StatusMessage")
+                //    .each(function (index) {
+                //        Status = $(this).find("Status").text();
+                //        Message = $(this).find("Message").text();
+
+                //        //  $("#hdMessage").text(Message);
+
+                //        errmsg = Message + "</br>";
+                //        $.alert(errmsg);
+                //        return;
+                //    });
             },
             error: function (msg) {
                 $("body").mLoading("hide");

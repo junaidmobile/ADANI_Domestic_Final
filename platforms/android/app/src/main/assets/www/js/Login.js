@@ -2,7 +2,7 @@
 //var GHAserviceURL = "https://uatwww.cargocel.in/GalaxydomHHTws/hhthandler.asmx/";
 
 //CELEBI DOM LIVE
-var GHAserviceURL = "https://www.cargocel.in/GalaxyDom/GalaxyDomHHT/hhthandler.asmx/";
+//var GHAserviceURL = "https://www.cargocel.in/GalaxyDom/GalaxyDomHHT/hhthandler.asmx/";
 
 
 //LIVE CELEBI DOM
@@ -11,6 +11,14 @@ var GHAserviceURL = "https://www.cargocel.in/GalaxyDom/GalaxyDomHHT/hhthandler.a
 //Adani BOM UAT
 
 //var GHAserviceURL = "https://adaniuat.kalelogistics.com/DOMBOMHHTHandler/HHTHandler.asmx/";
+
+//Menzies UAT
+
+//var GHAserviceURL = "https://galaxyuat.kalelogistics.com/DomMenziesHHT/HHTHandler.asmx/";
+
+var GHAserviceURL = "https://gmruat.kalelogistics.com:7081/GalaxyDomHYDHHT/HHTHandler.asmx/";
+
+
 
 var deviceUUID;
 var encryptedUUID;

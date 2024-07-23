@@ -40,12 +40,100 @@ $(function () {
         flightValue = $(this).val();
         GetImportBinningDetailsWithFlightNo(flightValue);
     });
+
+    GetLocationsFromMaster();
 });
 
 var TotPackages;
 var OldLocationPieces;
 
+function GetLocationsFromMaster() {
 
+
+    var connectionStatus = navigator.onLine ? "online" : "offline";
+
+    var errmsg = "";
+    // var strDimentionType = $("#ddlAccCMIN").val().toString() + "~" + $("#txtAccVolWt").val().toString();
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: "POST",
+            url: GHAserviceURL + "GetLocationsFromMaster",
+            data: JSON.stringify({
+                strUserId: UserId,
+                strVal: deviceUUID
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (Result) {
+                Result = Result.d;
+                var xmlDoc = $.parseXML(Result);
+                //console.log("save console");
+                console.log(xmlDoc);
+                _xmlDocTable = xmlDoc;
+                locationList = [];
+                $(xmlDoc).find('Table').each(function () {
+
+                    var ID = $(this).find('ID').text();
+                    var Name = $(this).find('Name').text();
+
+                    locationList.push({ 'value': ID, 'label': Name });
+
+                });
+
+                if (locationList.length > 0) {
+                    $("#txtlocation").autocomplete({
+                        minLength: 0,
+                        source: locationList,
+                        focus: function (event, ui) {
+                            // if (this.value == "") {
+                            //     $(this).autocomplete("search");
+                            // }
+                            $("#txtlocation").focus();
+                            $("#txtlocation").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtlocation").val(ui.item.label);
+
+
+                            // $("#project-id").val(ui.item.label);
+                            return false;
+                        }
+                    })
+                    $("#txtlocation").focus(function () {
+                        $(this).autocomplete("search", $(this).val());
+                    });
+                }
+                //$(xmlDoc)
+                //    .find("StatusMessage")
+                //    .each(function (index) {
+                //        Status = $(this).find("Status").text();
+                //        Message = $(this).find("Message").text();
+
+                //        //  $("#hdMessage").text(Message);
+
+                //        errmsg = Message + "</br>";
+                //        $.alert(errmsg);
+                //        return;
+                //    });
+            },
+            error: function (msg) {
+                $("body").mLoading("hide");
+                $.alert("Data could not be loaded");
+            },
+        });
+        return false;
+    } else if (connectionStatus == "offline") {
+        $("body").mLoading("hide");
+        $.alert("No Internet Connection!");
+    } else if (errmsg != "") {
+        $("body").mLoading("hide");
+        $.alert(errmsg);
+    } else {
+        $("body").mLoading("hide");
+    }
+}
 
 function GetImportBinningDetails() {
     $('#ddlFlightList').empty();

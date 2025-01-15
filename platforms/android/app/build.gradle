@@ -23,6 +23,7 @@ buildscript {
     repositories {
         mavenCentral()
         google()
+         maven { url "https://repo.grails.org/grails/core/" }
         jcenter()
     }
 
@@ -34,7 +35,8 @@ buildscript {
 // Allow plugins to declare Maven dependencies via build-extras.gradle.
 allprojects {
     repositories {
-        mavenCentral()
+       
+         maven { url "https://repo.grails.org/grails/core/" }
         jcenter()
     }
 }

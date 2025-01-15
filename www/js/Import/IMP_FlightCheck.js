@@ -48,7 +48,7 @@ $(function() {
 
     $('#txtFlightDate').val(date);
 
-    if (amplify.store("flightPrefix") != '' && amplify.store("flightNo") != '' && amplify.store("flightDate") != '') {
+    if (amplify.store("flightPrefix") != '' && amplify.store("flightNo") != '' && amplify.store("flightDate") != '' && amplify.store("flightDate") != undefined) {
         $("#txtFlightPrefix").val(amplify.store("flightPrefix"));
         $("#txtFlightNo").val(amplify.store("flightNo"));
         $("#txtFlightDate").val(amplify.store("flightDate"));
@@ -234,7 +234,29 @@ function GetFlightDetails() {
                         $('#txtExcessPieces').val($(this).find('ExcessLanded').text());
                         $('#txtDamagePieces').val($(this).find('DamagePkgs').text());
 
-                        $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text());
+                       // $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text());
+
+
+
+                        if ($(this).find('FlightStatus').text() == 'Arrived') {
+                            $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text()).css('color', 'green');
+                            // $('#lblFlightStatus').text('');
+                            $('#btnATA').attr('disabled', 'disabled');
+                        }
+                        else if ($(this).find('FlightStatus').text() == 'Not Arrived') {
+                            $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text()).css('color', 'red');
+                            $('#btnATA').removeAttr('disabled');
+                        }
+                        else {
+                            $('#lblFlightStatus').text('Flight Status:' + ' ' + $(this).find('FlightStatus').text()).css('color', 'green');
+                            $('#btnATA').attr('disabled', 'disabled');
+                        }
+
+                        if ($(this).find('FlightStatus').text() == 'Finalized') {
+                            $("#btnFinalize").attr('disabled', 'disabled');
+                        } else {
+                            $("#btnFinalize").removeAttr("disabled");
+                        }
 
                         var statusNext = $(this).find('IsNext').text();
                         if (statusNext == 'Y')

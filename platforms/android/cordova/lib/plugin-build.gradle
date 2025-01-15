@@ -21,6 +21,7 @@
 buildscript {
     repositories {
         google()
+         maven { url "https://repo.grails.org/grails/core/" }
         jcenter()
     }
 

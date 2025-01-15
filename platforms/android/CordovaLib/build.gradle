@@ -25,6 +25,7 @@ ext {
 buildscript {
     repositories {
         google()
+         maven { url "https://repo.grails.org/grails/core/" }
         jcenter()
     }
 
@@ -40,6 +41,7 @@ buildscript {
 allprojects {
     repositories {
         google()
+         maven { url "https://repo.grails.org/grails/core/" }
         jcenter()
     }
 }

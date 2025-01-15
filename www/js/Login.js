@@ -1,8 +1,8 @@
 ﻿//UAT CELEBI DOM
-//var GHAserviceURL = "https://uatwww.cargocel.in/GalaxydomHHTws/hhthandler.asmx/";
+//var GHAserviceURL = "http://uatwww.cargocel.in/GalaxyDomHHTWS/HHTHandler.asmx/";
 
 //CELEBI DOM LIVE
-//var GHAserviceURL = "https://www.cargocel.in/GalaxyDom/GalaxyDomHHT/hhthandler.asmx/";
+//var GHAserviceURL = "https://www.celebiaviation.in/GalaxyDOM/GalaxyDomHHT/HHTHandler.asmx/";
 
 
 //LIVE CELEBI DOM
@@ -10,7 +10,7 @@
 
 //Adani BOM UAT
 
-//var GHAserviceURL = "https://adaniuat.kalelogistics.com/DOMBOMHHTHandler/HHTHandler.asmx/";
+//var GHAserviceURL = "https://adaniuat.kalelogistics.com/DOMBOMHHTHANDLER/HHTHandler.asmx/";
 
 //Menzies UAT
 
@@ -18,6 +18,35 @@
 
 var GHAserviceURL = "https://gmruat.kalelogistics.com:7081/GalaxyDomHYDHHT/HHTHandler.asmx/";
 
+//NMI 
+//var GHAserviceURL = "https://adaniuat.kalelogistics.com/DOMNMIHHTHandler/HHTHandler.asmx/";
+
+//AMD UAT
+//var GHAserviceURL = "https://adaniuat.kalelogistics.com/DOMAMDNEWHHTHANDLER/HHTHandler.asmx/";
+
+
+//AMD LIVE
+//var GHAserviceURL = "https://adani.kalelogistics.com/DOMAMDHHTHandler/HHTHandler.asmx/";
+
+
+//GAU
+//var GHAserviceURL = "https://adaniuat.kalelogistics.com/DOMGAUHHTHANDLER/HHTHandler.asmx/";
+
+//IXE
+
+//var GHAserviceURL = "https://adaniuat.kalelogistics.com/DOMIXEHHTHANDLER/HHTHandler.asmx";
+
+//JAI
+
+//var GHAserviceURL = "https://adaniuat.kalelogistics.com/DOMJAIHHTHANDLER/HHTHandler.asmx";
+
+//LKO
+
+//var GHAserviceURL = "https://adaniuat.kalelogistics.com/DOMLKOHHTHANDLER/HHTHandler.asmx";
+
+//TRV
+
+//var GHAserviceURL = "https://adaniuat.kalelogistics.com/DOMTRVHHTHANDLER/HHTHandler.asmx";
 
 
 var deviceUUID;
@@ -209,38 +238,45 @@ function ProcessLogin(encryptedpassword, key, iv) {
                     var xmlDoc = $.parseXML(str);
                     //console.log(response);
                     console.log(xmlDoc);
-                    $(xmlDoc)
-                        .find("Table")
-                        .each(function (index) {
-                            window.localStorage.setItem(
-                                "UserID",
-                                $(this).find("MU_UserName_C").text()
-                            );
-                            window.localStorage.setItem("MU_CITY_C", $(this).find("MU_CITY_C").text());
-                            window.localStorage.setItem("ClientName", $(this).find("ClientName").text());
-                            window.localStorage.setItem("MU_OrgId_I", $(this).find("MU_OrgId_I").text());
+                    $(xmlDoc).find("Catch").each(function (index) {
+                        Status = $(this).find("Status").text();
+                        Message = $(this).find("Msg").text();
+                        if (Status == "E") {
+                            errmsg = Message + "</br>";
+                            $.alert(errmsg);
+                            return;
+                        }
+                    });
+                    $(xmlDoc).find("Table").each(function (index) {
+                        window.localStorage.setItem(
+                            "UserID",
+                            $(this).find("MU_UserName_C").text()
+                        );
+                        window.localStorage.setItem("MU_CITY_C", $(this).find("MU_CITY_C").text());
+                        window.localStorage.setItem("ClientName", $(this).find("ClientName").text());
+                        window.localStorage.setItem("MU_OrgId_I", $(this).find("MU_OrgId_I").text());
 
 
-                            window.localStorage.setItem("CHG_WT_RF", $(this).find("ChargeableWeight_roundoff").text());
-                            window.localStorage.setItem("ROUND_FACTOR", $(this).find("ChargeableWeight_ROUNDFACTOR").text());
-                            window.localStorage.setItem("CHG_WT_DSBL", $(this).find("DisableChargeablewtTextbox").text());
+                        window.localStorage.setItem("CHG_WT_RF", $(this).find("ChargeableWeight_roundoff").text());
+                        window.localStorage.setItem("ROUND_FACTOR", $(this).find("ChargeableWeight_ROUNDFACTOR").text());
+                        window.localStorage.setItem("CHG_WT_DSBL", $(this).find("DisableChargeablewtTextbox").text());
 
 
-                            MU_Password_C = $(this).find("MU_Password_C").text();
+                        MU_Password_C = $(this).find("MU_Password_C").text();
 
-                            if (key == MU_Password_C) {
-                                window.localStorage.setItem("GHAserviceURL", GHAserviceURL);
-                                window.location = "GalaxyHome.html";
-                                MU_Password_C = '';
-                            } else {
-                                $.alert('Invalid username/password.');
-                                return;
-                            }
+                        if (key == MU_Password_C) {
+                            window.localStorage.setItem("GHAserviceURL", GHAserviceURL);
+                            window.location = "GalaxyHome.html";
+                            MU_Password_C = '';
+                        } else {
+                            $.alert('Invalid username/password.');
+                            return;
+                        }
 
-                            //window.localStorage.setItem("MU_CITY_C", $(this).find("MU_CITY_C").text());
-                            //window.localStorage.setItem("MU_CITY_C", $(this).find("MU_CITY_C").text());
+                        //window.localStorage.setItem("MU_CITY_C", $(this).find("MU_CITY_C").text());
+                        //window.localStorage.setItem("MU_CITY_C", $(this).find("MU_CITY_C").text());
 
-                        });
+                    });
 
                     $(xmlDoc)
                         .find("StatusMessage")
@@ -259,11 +295,12 @@ function ProcessLogin(encryptedpassword, key, iv) {
                     $.alert(errmsg);
                 }
             },
-            error: function (msg) {
-                HideLoader();
-                var r = jQuery.parseJSON(msg.responseText);
-                alert("Message: " + r.Message);
-            },
+            error: function (xhr, textStatus, errorThrown) {
+                $("body").mLoading('hide');
+                //alert('Server not responding...');
+                console.log(xhr.responseText);
+                alert(xhr.responseText);
+            }
         });
 
         //window.location = "GalaxyHome.html";

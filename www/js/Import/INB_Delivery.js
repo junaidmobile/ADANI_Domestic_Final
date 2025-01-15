@@ -351,10 +351,20 @@ function CheckDeliveryDetails() {
 
 
 function EncryptPassword() {
-    if ($("#txtAWBNo").val() == '' || $("#txtAWBNo").val().length != 11) {
-        errmsg = "Please enter AWB No.</br>";
-        $.alert(errmsg);
-        return;
+    if ($('#chkGPNo').prop('checked')) {
+        if ($("#txtGatePassNo").val() == '') {
+            errmsg = "Please enter Gate Pass No.</br>";
+            $.alert(errmsg);
+            return;
+        }
+    }
+
+    if ($('#chkAWBNo').prop('checked')) {
+        if ($("#txtAWBNo").val() == '' || $("#txtAWBNo").val().length != 11) {
+            errmsg = "Please enter AWB No.</br>";
+            $.alert(errmsg);
+            return;
+        }
     }
 
     if ($("#ddlGatePassNo").val() == undefined) {
@@ -411,12 +421,22 @@ function encryptpasswords(pass, key, iv) {
 function SaveDeliveryDetails(encryptedpassword) {
 
     console.log(encryptedpassword.toString())
-
-    if ($("#txtAWBNo").val() == '' || $("#txtAWBNo").val().length != 11) {
-        errmsg = "Please enter AWB No.</br>";
-        $.alert(errmsg);
-        return;
+    if ($('#chkGPNo').prop('checked')) {
+        if ($("#txtGatePassNo").val() == '') {
+            errmsg = "Please enter Gate Pass No.</br>";
+            $.alert(errmsg);
+            return;
+        }
     }
+
+    if ($('#chkAWBNo').prop('checked')) {
+        if ($("#txtAWBNo").val() == '' || $("#txtAWBNo").val().length != 11) {
+            errmsg = "Please enter AWB No.</br>";
+            $.alert(errmsg);
+            return;
+        }
+    }
+    
     if ($("#txtDelieveredTo").val() == '') {
         errmsg = "Please enter delivered to.</br>";
         $.alert(errmsg);
@@ -451,8 +471,15 @@ function SaveDeliveryDetails(encryptedpassword) {
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
+            beforeSend: function doStuff() {
+                //$('.dialog-background').css('display', 'block');
+                $('body').mLoading({
+                    text: "Loading..",
+                });
+            },
             success: function (Result) {
                 Result = Result.d;
+                $("body").mLoading('hide');
                 var xmlDoc = $.parseXML(Result);
                 console.log("Save Details Response", xmlDoc)
                 $(xmlDoc).find('Table').each(function (index) {

@@ -1,0 +1,911 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=0">
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script src="bootstrap/js/jquery-1.12.0.min.js"></script>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="scripts/jquery-ui.js"></script>
+    <link href="css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link href="css/sticky-footer.css" rel="stylesheet" />
+    <script src="scripts/LoadingModel.js"></script>
+    <script src="scripts/LoaderShow-Hide.js"></script>
+    <script src="scripts/Login.js"></script>
+    <script src="scripts/dialog.js"></script>
+    <script src="js/General.js"></script>
+    <link href="css/General.css" rel="stylesheet" />
+    <script src="scripts/alert.mob.js"></script>
+    <link href="css/Loader.css" rel="stylesheet" />
+    <link href="css/dialog.css" rel="stylesheet" />
+    <link href="css/alert.mob.css" rel="stylesheet" />
+    <script src="js/Export/OUTB_Acceptance.js"></script>
+
+    <style>
+        table td input {
+            width: 90%;
+        }
+
+        /*table td, th {
+            width: 80%;
+        }*/
+
+        .panel-heading .accordion-toggle:after {
+            /* symbol for "opening" panels */
+            font-family: 'Glyphicons Halflings';
+            /* essential for enabling glyphicon */
+            content: "\e114";
+            /* adjust as needed, taken from bootstrap.css */
+            float: right;
+            /* adjust as needed */
+            color: white;
+            /* adjust as needed */
+        }
+
+        .panel-heading .accordion-toggle.collapsed:after {
+            /* symbol for "collapsed" panels */
+            content: "\e080";
+            /* adjust as needed, taken from bootstrap.css */
+        }
+
+        .panel-title {
+            background-color: #065da1;
+            color: white;
+        }
+
+        .panel-group .panel {
+            padding: 5px !important;
+        }
+
+        .panel {
+            padding: 0px !important;
+            box-shadow: none !important;
+        }
+
+        .pnlTextBox {
+            width: 95% !important;
+        }
+
+        /* .loc_input {
+            height: 20px;
+            width: 80px;
+            margin-left: 5px;
+            margin-right: 20px;
+        }
+
+        .pieces_input {
+            height: 20px;
+            width: 40px;
+            margin-right: 5px;
+        } */
+
+        #btnHistory {
+            background-color: white;
+            color: orange;
+            border: 0px;
+            text-decoration: underline;
+            font-size: 13px;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            /*z-index: 1;*/
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 10px;
+            border: 1px solid #888;
+            /*width: 90%;*/
+        }
+
+        .modal-body {
+            padding: 0px !important;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .container-fluid {
+            padding-right: 10px !important;
+            padding-left: 10px !important;
+        }
+
+        /* .panel-heading {
+            padding-right: 10px !important;
+            padding-left: 10px !important;
+        } */
+
+        #TextBoxDiv td.foo:nth-child(7n+1) {
+            background-color: rgb(177,112,136);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+2) {
+            background-color: rgb(27,81,141);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+3) {
+            background-color: rgb(13,150,68);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+4) {
+            background-color: rgb(35,29,31);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+5) {
+            background-color: rgb(157,124,43);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+6) {
+            background-color: rgb(14,76,166);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+7) {
+            background-color: rgb(206,84,209);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+8) {
+            background-color: rgb(143,74,219);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv td.foo:nth-child(7n+9) {
+            background-color: rgb(198,139,74);
+            color: white;
+            padding: 3px;
+            text-align: center;
+        }
+
+        #TextBoxDiv > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            font-size: 12px;
+        }
+
+        #TextBoxDiv {
+            margin-bottom: 0px !important;
+            margin-top: 5px;
+        }
+
+        .blink_me {
+            animation: blinker 1s linear infinite;
+            background-color: yellow;
+            padding: 15px;
+            text-align: center;
+            line-height: 50px;
+            font-weight: bolder;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            vertical-align: inherit;
+        }
+
+        .panel-heading {
+            padding-bottom: 0px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header" style="background-color:#065da1;">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" id="btnnavbar"
+                        data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" id="navhdrName" style="text-align:right;"></a>
+                <img class="navbarImage" src="images/Logo.png" onclick="ShowHomePage();">
+                <a href="#" id="navhdr" class="loggedinUser"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid" style="margin-top:63px;">
+        <div class="panel-body">
+            <div class="panel panel-widget forms-panel form-grids widget-shadow">
+                <div class="forms">
+                    <div class="form-body">
+                        
+                        
+                            <div class="row form-group" id="divInternalMvmt">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblAWBNo" for="txtAWBNo">AWB No</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input id="txtAWBNo" class="form-control"
+                                               style="text-align:right;" onblur="GetAWBDetails()" autofocus oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                               type="number"
+                                               maxlength="11">
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label id="lblAWBNo" for="txtCommodity">Commodity</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-8 NoPadding">
+                                        <input id="txtCommodity" class="form-control" type="text" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <table class="table" id="TextBoxDiv">
+                                    </table>
+                                </div>
+
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <label for="txtFromLocation">Declared</label>
+                                        <font color="red">*</font>
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <label for="txtFromLocation">Pieces</label>
+                                    </div>
+                                    <div class="col-xs-3 NoPadding">
+                                        <label for="txtFromLocation">Gr. Wt.</label>
+                                    </div>
+                                    <div class="col-xs-3 NoPadding">
+                                        <label for="txtFromLocation">Ch. Wt.</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div class="col-xs-4 col-form-label">
+                                        <!--<label for="txtFromLocation">Declared</label>
+            <font color="red">*</font>-->
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <input id="txtPcsShow" class="form-control pnlTextBox text-right" type="text"
+                                               maxlength="20" disabled>
+                                    </div>
+                                    <div class="col-xs-3 NoPadding">
+                                        <input id="txtGrWtShow" class="form-control pnlTextBox text-right" type="text"
+                                               maxlength="20" disabled>
+                                    </div>
+                                    <div class="col-xs-3 NoPadding">
+                                        <input id="txtChWtShow" class="form-control pnlTextBox text-right" type="text"
+                                               maxlength="20" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="panel-body">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title" style="padding: 5px 5px;">
+                                    <a class="accordion-toggle" style="font-size: 16px;" data-toggle="collapse"
+                                       data-parent="#accordion" href="#collapseOne">
+                                        Capture Acceptance Details
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-12 col-form-label">
+                                            <label for="txtFromLocation">Acceptance</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-4 NoPadding">
+                                            <label for="txtAccPieces">Pieces</label>
+                                            <font color="red">*</font>
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <label for="txtAccGrWt">Gr. Wt.</label>
+                                            <font color="red">*</font>
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <label for="txtFromLocation">Dim type</label>
+                                            <font color="red">*</font>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-4 NoPadding">
+                                            <input id="txtAccPieces" onblur="CalculateVol()"
+                                                   onkeyup="NumberOnly(event);" class="text-right form-control pnlTextBox"
+                                                   type="text" maxlength="20">
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <input id="txtAccGrWt" onkeyup="IsNumericWithDecimal(event);"
+                                                   class="text-right form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <select class="form-control pnlTextBox" id="ddlAccCMIN">
+                                                <!--<option value="CM">CM</option>
+                                                <option value="IN">IN</option>-->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-3 NoPadding">
+                                            <label for="txtFromLocation">Length</label>
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <label for="txtFromLocation">Width</label>
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <label for="txtFromLocation">Height</label>
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <label for="txtFromLocation">Vol. Wt.</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-3 NoPadding">
+                                            <input id="txtAccLength" onblur="CalculateVol()"
+                                                   onkeyup="IsNumericWithDecimal(event);"
+                                                   class="text-right form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <input id="txtAccWidth" onblur="CalculateVol()"
+                                                   onkeyup="IsNumericWithDecimal(event);"
+                                                   class="text-right form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <input id="txtAccHeight" onblur="CalculateVol()"
+                                                   onkeyup="IsNumericWithDecimal(event);"
+                                                   class="text-right form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <input id="txtAccVolWt" disabled onkeyup="IsNumericWithDecimal(event);"
+                                                   class="text-right form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-9 NoPadding">
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <input type="button" id="btnLocate" class="form-control ButtonColor"
+                                                   value="Add" onclick="SaveAcceptance();">
+                                        </div>
+                                    </div>
+                                    <!-- Trigger/Open The Modal -->
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-6 NoPadding">
+                                        </div>
+                                        <div class="col-xs-6 NoPadding">
+                                            <a id="btnHistory" style="float:right;"
+                                               onclick="GetHistoryForAcceptance('A');">ACCEPTANCE HISTORY</a>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Trigger/Open The Modal -->
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-12 col-form-label">
+                                            <label for="txtFromLocation">Total Received</label>
+                                            <font color="red">*</font>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-4 NoPadding">
+                                            <label id="lblAWBNo" for="">Pieces</label>
+                                            <input id="txtACCPcs" class="form-control pnlTextBox text-right" type="text"
+                                                   maxlength="20" disabled>
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <label id="lblAWBNo" for="">Gr. Wt.</label>
+                                            <input id="txtACCGrWt" class="form-control pnlTextBox text-right"
+                                                   type="text" maxlength="20" disabled>
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <label id="lblAWBNo" for="">Vol. Wt.</label>
+                                            <input id="txtACCChWt" class="form-control pnlTextBox text-right"
+                                                   type="text" maxlength="20" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding"
+                                         style="margin-top: 15px;">
+                                        <div class="col-xs-5 NoPadding"> </div>
+                                        <div class="col-xs-7 NoPadding">
+                                            <input type="button" id="btnLocate" class="form-control ButtonColor"
+                                                   value="Complete acceptance" onclick="CompleteAcceptance();">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title" style="padding: 5px 5px;">
+                                    <a class="accordion-toggle" style="font-size: 16px;" data-toggle="collapse"
+                                       data-parent="#accordion" href="#collapseTwo">
+                                        Capture Rejection Details
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-12 col-form-label">
+                                            <label for="txtFromLocation">Rejection</label>
+                                            <font color="red">*</font>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-4 NoPadding">
+                                            <label for="txtRejectionPcs">Pieces</label>
+                                            <font color="red">*</font>
+                                        </div>
+
+                                        <div class="col-xs-4 NoPadding">
+                                            <label for="txtRejectionGrWt">Gr. Wt.</label>
+                                            <font color="red">*</font>
+                                        </div>
+
+                                        <div class="col-xs-4 NoPadding">
+                                            <label for="txtFromLocation">Dim type</label>
+                                            <font color="red">*</font>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+
+                                        <div class="col-xs-4 NoPadding">
+                                            <input id="txtRejsubmitPcs" onblur="CalculateVolForRej()"
+                                                   onkeyup="NumberOnly(event);" class="text-right form-control pnlTextBox"
+                                                   type="text" maxlength="20">
+                                        </div>
+
+                                        <div class="col-xs-4 NoPadding">
+                                            <input id="txtRejsubmitGrWt" onkeyup="IsNumericWithDecimal(event);"
+                                                   class="text-right form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+
+                                        <div class="col-xs-4 NoPadding">
+                                            <select class="form-control pnlTextBox" id="ddlRejCMIN">
+                                                <!--<option value="CM">CM</option>
+                                                <option value="IN">IN</option>-->
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-3 NoPadding">
+                                            <label for="txtFromLocation">Length</label>
+                                        </div>
+
+                                        <div class="col-xs-3 NoPadding">
+                                            <label for="txtFromLocation">Width</label>
+                                        </div>
+
+                                        <div class="col-xs-3 NoPadding">
+                                            <label for="txtFromLocation">Height</label>
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <label for="txtFromLocation">Vol. Wt.</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+
+                                        <div class="col-xs-3 NoPadding">
+                                            <input id="txtRejLength" onblur="CalculateVolForRej()"
+                                                   onkeyup="IsNumericWithDecimal(event);"
+                                                   class="text-right form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+
+                                        <div class="col-xs-3 NoPadding">
+                                            <input id="txtRejWidth" onblur="CalculateVolForRej()"
+                                                   onkeyup="IsNumericWithDecimal(event);"
+                                                   class="text-right form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+
+                                        <div class="col-xs-3 NoPadding">
+                                            <input id="txtRejHeight" onblur="CalculateVolForRej()"
+                                                   onkeyup="IsNumericWithDecimal(event);"
+                                                   class="text-right form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <input id="txtRejVolWt" disabled onkeyup="IsNumericWithDecimal(event);"
+                                                   class="text-right form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-9 NoPadding">
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <input type="button" id="btnLocate" class="form-control ButtonColor"
+                                                   value="Add" onclick="RejectAcceptance();">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-6 NoPadding">
+                                        </div>
+                                        <div class="col-xs-6 NoPadding">
+                                            <a id="btnHistory" style="float:right;" onclick="GetHistoryForRejection('R');">
+                                                REJECTION
+                                                HISTORY
+                                            </a>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-12 col-form-label">
+                                            <label for="txtFromLocation">Total Rejection</label>
+                                            <font color="red">*</font>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-4 NoPadding">
+                                            <label id="lblAWBNo" for="">Pieces</label>
+                                            <input id="txtRejPcs" class="form-control pnlTextBox text-right" type="text"
+                                                   maxlength="20" disabled>
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <label id="lblAWBNo" for="">Gr. Wt.</label>
+                                            <input id="txtRejGrWt" class="form-control pnlTextBox text-right"
+                                                   type="text" maxlength="20" disabled>
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <label id="lblAWBNo" for="">Vol. Wt.</label>
+                                            <input id="txtRejChWt" class="form-control pnlTextBox text-right"
+                                                   type="text" maxlength="20" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title" style="padding: 5px 5px;">
+                                    <a class="accordion-toggle" style="font-size: 16px;" data-toggle="collapse"
+                                       data-parent="#accordion" href="#collapseThree">
+                                        Packaging Details and Location
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-4 col-form-label">
+                                        </div>
+                                        <div class="col-xs-4 col-form-label">
+                                            <label for="txtFromLocation">Expected</label>
+                                        </div>
+                                        <div class="col-xs-4 col-form-label">
+                                            <label for="txtFromLocation">Received</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-4 NoPadding">
+                                            <label for="txtFromLocation">Pieces</label>
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <input id="txtPackagingPCSExp" disabled
+                                                   class="form-control pnlTextBox text-right" type="text" maxlength="20">
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <input id="txtPackagingPCSRecv" disabled
+                                                   class="form-control pnlTextBox text-right" type="text" maxlength="20">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-4 NoPadding">
+                                            <label for="txtFromLocation">Gross Weight</label>
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <input id="txtPackagingGrossWeightExp" disabled
+                                                   class="form-control pnlTextBox text-right" type="text" maxlength="20">
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <input id="txtPackagingGrossWeightRecv" disabled
+                                                   class="form-control pnlTextBox text-right" type="text" maxlength="20">
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-4 NoPadding">
+                                            <label for="txtFromLocation">Chargeable Weight</label>
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <input id="txtPackagingChargeableWeightExp" disabled
+                                                   class="form-control pnlTextBox text-right" type="text" maxlength="20">
+                                        </div>
+                                        <div class="col-xs-4 NoPadding">
+                                            <input id="txtPackagingChargeableWeightRecv" disabled
+                                                   class="form-control pnlTextBox text-right" type="text" maxlength="20">
+                                        </div>
+
+                                    </div>
+                                    <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-4 col-form-label">
+                                        </div>
+                                        <div class="col-xs-4 col-form-label">
+                                            <label for="txtFromLocation">Location Code</label>
+                                        </div>
+                                        <div class="col-xs-4 col-form-label">
+                                            <label for="txtFromLocation">Pieces</label>
+                                        </div>
+                                    </div>-->
+                                    <!-- <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="addLocation">
+
+                                        <div class="col-xs-4 NoPadding">
+                                            <label for="txtFromLocation">Location</label>
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <input id="txtLocationCode" class="form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+                                        <div class="col-xs-3 NoPadding">
+                                            <input id="txtLocationCodePCS" class="form-control pnlTextBox" type="text" maxlength="20">
+                                        </div>
+                                        <div class="col-xs-2 NoPadding">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                            <span class="glyphicon glyphicon-minus"></span>
+                                        </div>
+
+                                    </div> -->
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" id="addLocation">
+
+                                        <div class="col-xs-4 NoPadding">
+                                            <label for="txtFromLocation">Location</label>
+                                        </div>
+                                        <!--<table id="addLocation">
+
+                                            <tr id="trHideforLocation">
+                                                <td>
+                                                    <input id="txtLocationCode0" class="loc_input form-control pnlTextBox" type="text" maxlength="20">
+                                                </td>
+                                                <td>
+                                                    <input id="pieces0" onkeyup="NumberOnly(event);" class="pieces_input form-control pnlTextBox text-right" type="text" maxlength="20">
+                                                </td>
+                                                <td>
+                                                    <input type="button" id="addBtnForLocation" style="margin-bottom: 5px;" value="Add" class="btnAdd form-control ButtonColor" />
+                                                </td>
+                                            </tr>
+                                        </table>-->
+
+
+                                        <div class="col-xs-8 NoPadding">
+                                            <table id="dimentiontable" class="col-md-12" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <td class="">
+                                                            <label style="font-weight: 700;
+                                                            font-size: small;">Location Code</label>
+                                                        </td>
+
+                                                        <td class="">
+                                                            <label style="font-weight: 700;
+                                                            font-size: small;">Pieces</label>
+                                                        </td>
+
+                                                        <td class="">
+                                                            <div style="color:black;"
+                                                                 id='addButton'>
+                                                                <span class="glyphicon glyphicon-plus"></span>
+                                                            </div>
+                                                        </td>
+
+                                                    </tr>
+                                                </thead>
+
+
+                                                <tbody id="TextBoxesGroup" style="width: 100%;margin-top: 10px;">
+                                                    <tr id="TextBoxDiv1m">
+                                                        <td>
+                                                            <input class="textpackges text-left form-control  pnlTextBox" id="txtLocationCode0"
+                                                                   type="text" />
+                                                        </td>
+                                                        <td>
+                                                            <input onkeyup="NumberOnly(event);"
+                                                                   class="textpackges text-right form-control pnlTextBox" id="pieces0"
+                                                                   type="text" />
+                                                        </td>
+                                                        <td style="display:none;">
+                                                            <input value="-1"
+                                                                   class="textpackges text-right form-control pnlTextBox" id="" type="text" />
+                                                        </td>
+                                                        <td><div id="btnAdd" class="btn"></div></td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                        <div class="col-xs-4 NoPadding">
+                                        </div>
+                                        <div class="col-xs-8 NoPadding">
+                                            <input type="button" id="btnLocate" class="form-control ButtonColor"
+                                                   value="SAVE LOCATION" onclick="calLocationRows();">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <footer class="footer" style="color: white; font-size: 12px;  background-color: whi;">
+                <div class="">
+
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                        <div class="col-xs-2 NoPadding">
+                            <h5 style="color: black;margin-bottom:10px;">
+                                Status:
+                            </h5>
+                        </div>
+                        <div class="col-xs-10 NoPadding">
+                            <h5 style="color: black;" id="SatusMsg"></h5>
+                        </div>
+                    </div>
+                    <div class="row form-group" style="margin-top: 5px; background-color: white; margin-bottom: 0px;">
+
+                        <div class="form-group col-xs-4 col-sm-4 col-md-4">
+
+                            <input type="button" id="btnExit" class="form-control ButtonColor" value="Back"
+                                   onclick="window.location.href = 'EXP_Dashboard.html'">
+                        </div>
+                        <div class="form-group col-xs-4 col-sm-2 col-md-2">
+
+                            
+                            <input type="button" id="btnClear" class="form-control ButtonColor" value="Clear"
+                                   onclick="ClearFields();">
+                        </div>
+                        <div class="form-group col-xs-4 col-sm-2 col-md-2" style=" padding-right: 30px; ">
+                            <input type="button" id="btnSubmit" class="form-control ButtonColor" value="Complete"
+                                   onclick="beforeCompleteAcceptance();">
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+
+        <div id="acceptanceModal" class="modal" data-backdrop="static" data-keyboard="false">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body" id="divAcceptPoPUp">
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <!--<button type="button" class="btn ButtonColor"  id="btnsaveMValue" onclick="SaveDimentionGrigValue();">Save</button>-->
+                    <button type="button" class="btn ButtonColor" data-dismiss="modal" id="closeModal">Close</button>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div id="rejectionModal" class="modal" data-backdrop="static" data-keyboard="false">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body" id="divRejectionPoPUp">
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn ButtonColor" data-dismiss="modal" id="closeModalRejection">Close</button>
+                </div>
+            </div>
+        </div>
+
+
+</body>
+<script language="javascript" type="text/javascript">
+    function toggleIcon(e) {
+
+        $(e.target)
+            .prev('.panel-heading')
+            .find(".more-less")
+            .toggleClass('zmdi-plus zmdi-minus');
+    }
+    $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+    $('.panel-group').on('shown.bs.collapse', toggleIcon);
+    $('#RightsReserved').text(' \xA9 Kale Logistics Solutions Private Limited. ' + (new Date).getFullYear().toString());
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    // Get the button that opens the modal
+    var btn = document.getElementById("btnHistory");
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+
+        }
+    }
+</script>
+
+</html>

@@ -24,9 +24,10 @@
     <script src="js/Import/IMP_CheckAWB.js"></script>
 
     <style>
-        .checkbox-inline{
+        .checkbox-inline {
             line-height: 1.7 !important;
         }
+
         #TextBoxDiv td.foo:nth-child(7n+1) {
             background-color: rgb(177,112,136);
             color: white;
@@ -161,6 +162,57 @@
                                         <input id="txtFltDate" class="form-control" type="text" style="text-align:right;" disabled>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row" style="box-shadow: 0 -1px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%);padding:5px;margin-bottom:5px;background-color: lightgoldenrodyellow;">
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div style="padding-left: 0px;" class="col-xs-6 col-form-label">
+                                        <label id="lblULDNo" for="txtULDNo" class="control-label labelFont">
+                                            Scan ULD
+                                        </label>
+
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <input type="text" id="txtScanULD" autocomplete="off" class="form-control" maxlength="20" autofocus="" oninput="this.value = this.value.toUpperCase()">
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div style="padding-left: 0px;" class="col-xs-6 col-form-label">
+                                        <label id="lblULDNo" for="txtULDNo" class="control-label labelFont">
+                                            ULD
+                                            No.
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-6 NoPadding">
+                                        <select class="form-control" id="ddlULDNo" onchange="GetAWBDetailsForULD($('#ddlULDNo').val())"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
+                                    <div style="padding-left: 0px;" class="col-xs-6 col-form-label">
+
+                                    </div>
+                                    <div class="col-xs-6 NoPadding" style="margin-top:5px;">
+                                        <input type="button" id="btnModify" class="form-control ButtonColor" value="BULK/ULD Complete" onclick="UpdateImportULDClose()">
+                                    </div>
+                                </div>
+                                <label id="successMsg"></label>
+                                <!--<div class="col-xs-12 NoPadding">
+                                    <label id="successMsg"></label>
+                                </div>-->
+                                <!--<div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding" style="margin-top:5px;">
+                                    <div style="padding-left: 0px;" class="col-xs-6 col-form-label">
+                                        <label id="lblUldManpower" for="txtUldManpower" class="control-label labelFont">
+                                            Uld Manpower
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-4 NoPadding">
+                                        <input id="txtUldManpower" onblur="goToAWBNoTextBox();" class="form-control" type="text" style="text-align:right;">
+                                    </div>
+                                    <div class="col-xs-2 NoPadding">
+                                        <input type="button" id="btnULDManPower" class="form-control ButtonColor" value="Save" onclick="SaveULDManpowerDetails();">
+                                    </div>
+                                </div>-->
                             </div>
                             <!-- <div class="row">
                                 <div class="form-group col-xs-12 col-sm-6 col-md-6 NoPadding">
@@ -332,7 +384,7 @@
                             <div class="row form-group" style="margin-top:10px;">
 
                                 <div class="form-group col-xs-6 col-sm-6 col-md-6">
-                                    <input data-toggle="modal"  type="button" id="btnUpload" class="form-control ButtonColor" value="Upload" onclick="">
+                                    <input data-toggle="modal" type="button" id="btnUpload" class="form-control ButtonColor" value="Upload" onclick="">
                                 </div>
                                 <div class="form-group col-xs-6 col-sm-6 col-md-6">
                                     <input type="button" id="btnModify" class="form-control ButtonColor" value="Submit" onclick="UpdateAWBDetails();">

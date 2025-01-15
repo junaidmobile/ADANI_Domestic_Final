@@ -165,6 +165,9 @@ function LoadNavBar() {
     else if (window.location.pathname.split("/").pop() == "IMP_RecordDamage.html") {
         $('#navhdrName').html("Record Damage");
     }
+    else if (window.location.pathname.split("/").pop() == "IMP_ULDAcceptance.html") {
+        $('#navhdrName').html("ULD Acceptance");
+    }
 }
 function NumberOnly(e) {
     e.target.value = e.target.value.replace(/[^0-9]/g, '');

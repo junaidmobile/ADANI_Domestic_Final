@@ -64,7 +64,9 @@ function RedirectPage(pagename) {
         localStorage.removeItem('allIDs');
         window.location.href = pagename;
     }
-
+    else if (pagename == 'IMP_ULDAcceptance.html') {
+        window.location.href = pagename;
+    }
 
 
 }

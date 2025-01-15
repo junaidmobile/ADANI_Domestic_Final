@@ -35,7 +35,7 @@ var tieldAwbID;
 var showAll = 'N';
 var FileNameFromCAM;
 
-$(function() {
+$(function () {
     flightPrefix = amplify.store("flightPrefix");
     flightNo = amplify.store("flightNo");
     flightDisplayDate = amplify.store("flightDisplayDate");
@@ -59,7 +59,7 @@ $(function() {
     }
 
 
-    $('#btnUpload').click(function() {
+    $('#btnUpload').click(function () {
 
         if ($('#ddlAWBNo').val() == "0") {
             //$('#txtDescription').css("border","solid thin red")
@@ -85,12 +85,43 @@ $(function() {
 
     FileNameFromCAM = 'CAM' + date + '.jpg';
 
+    $("#txtScanULD").blur(function () {
+
+        if ($("#txtScanULD").val() != '') {
+            var value = this.value;// parseInt(this.value, 10),
+            var result = value.replace(/^(.{3})(.{5})(.*)$/, "$1 $2 $3");
+            dd = document.getElementById('ddlULDNo'),
+                index = 0;
+
+            $.each(dd.options, function (i) {
+                if (this.text == result) {
+                    index = i;
+                }
+            });
+
+            dd.selectedIndex = index; // set selected option
+
+            if (dd.selectedIndex == 0) {
+                //errmsg = "Please scan/enter valid ULD No.";
+                //$.alert(errmsg);
+                $('#successMsg').text('Please scan/select valid ULD No.').css('color', 'red');
+                $("#txtScanULD").val('');
+                $("#txtScanULD").focus();
+                return;
+            } else {
+                $('#successMsg').text('');
+            }
+            console.log(dd.selectedIndex);
+            $('#ddlULDNo').trigger('change');
+        }
+    });
+
 
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-    $('#btnImageGetFromCamera').click(function() {
+    $('#btnImageGetFromCamera').click(function () {
         var options = {
             quality: 50,
             destinationType: Camera.DestinationType.DATA_URL,
@@ -160,7 +191,7 @@ function ImportManifestUloadDoc() {
                     text: "Loading..",
                 });
             },
-            success: function(Result) {
+            success: function (Result) {
                 Result = Result.d;
                 var xmlDoc = $.parseXML(Result);
 
@@ -168,7 +199,7 @@ function ImportManifestUloadDoc() {
                 console.log(xmlDoc);
                 $("body").mLoading('hide');
 
-                $(xmlDoc).find('Table').each(function(index) {
+                $(xmlDoc).find('Table').each(function (index) {
                     debugger
                     Status = $(this).find('Status').text();
                     StrMessage = $(this).find('StrMessage').text();
@@ -181,7 +212,7 @@ function ImportManifestUloadDoc() {
                 });
 
             },
-            error: function(msg) {
+            error: function (msg) {
                 $("body").mLoading('hide');
                 alert('Data could not be loaded');
             }
@@ -262,23 +293,23 @@ function GetULDDetails() {
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function(Result) {
+            success: function (Result) {
                 Result = Result.d;
                 var xmlDoc = $.parseXML(Result);
                 console.log('45');
                 console.log(xmlDoc);
                 xmlDamageType = xmlDoc;
-
-                $(xmlDoc).find('Table1').each(function(index) {
+                $('#ddlULDNo').empty();
+                $(xmlDoc).find('Table1').each(function (index) {
 
                     var AWBID;
                     var AWBNo;
                     AWBID = $(this).find('AWBID').text();
                     AWBNo = $(this).find('AWBNo').text();
 
-                    var newOption = $('<option></option>');
-                    newOption.val(AWBID).text(AWBNo);
-                    newOption.appendTo('#ddlAWBNo');
+                    //var newOption = $('<option></option>');
+                    //newOption.val(AWBID).text(AWBNo);
+                    //newOption.appendTo('#ddlAWBNo');
 
                     // if (selectedRowULDNo != '') {
                     //     $("#ddlULDNo option").each(function () {
@@ -311,13 +342,44 @@ function GetULDDetails() {
 
 
 
-                $("#ddlULDNo option").each(function() {
+                $("#ddlULDNo option").each(function () {
                     if ($(this).val() == SavedULDSeqNo) {
                         $(this).attr('selected', 'selected');
                     }
                 });
 
-                $(xmlDoc).find('Table3').each(function() {
+
+                $(xmlDoc).find('Table4').each(function (index) {
+
+                    var DamageCode;
+                    var DamageType;
+                    ULDList = $(this).find('ULDList').text();
+                    UlDSeqNo = $(this).find('UlDSeqNo').text();
+
+                    if (index == 0) {
+                        var newOption = $('<option></option>');
+                        newOption.val(0).text('Select');
+                        newOption.appendTo('#ddlULDNo');
+                    }
+
+                    var newOption = $('<option></option>');
+                    newOption.val(UlDSeqNo).text(ULDList);
+                    newOption.appendTo('#ddlULDNo');
+
+                    //if (selectedRowAWBNo != '') {
+                    //    $("#ddlAWBNo option").each(function () {
+                    //        if ($(this).text() == selectedRowAWBNo) {
+                    //            $(this).attr('selected', 'selected');
+                    //            var selectedMawbId = $(this).val();
+
+                    //            GetHAWBDetails(selectedMawbId);
+                    //        }
+                    //    });
+                    //}
+
+                });
+
+                $(xmlDoc).find('Table3').each(function () {
 
                     var DamageCode;
                     var DamageType;
@@ -329,7 +391,7 @@ function GetULDDetails() {
                     newOption.appendTo('#ddlDamageType');
 
                     if (selectedRowAWBNo != '') {
-                        $("#ddlAWBNo option").each(function() {
+                        $("#ddlAWBNo option").each(function () {
                             if ($(this).text() == selectedRowAWBNo) {
                                 $(this).attr('selected', 'selected');
                                 var selectedMawbId = $(this).val();
@@ -354,7 +416,7 @@ function GetULDDetails() {
 
                 // });
             },
-            error: function(msg) {
+            error: function (msg) {
                 $("body").mLoading('hide');
                 $.alert('Data could not be loaded');
             }
@@ -388,7 +450,7 @@ function GetAWBDetailsForULD(ULDid) {
 
     ULDSeqNo = ULDid;
 
-    inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo>' + ULDid + '</UlDSeqNo><AirportCity>' + AirportCity + '</AirportCity><ShowAll>' + showAll + '</ShowAll></Root>';
+    inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo>' + ULDid + '</UlDSeqNo><AirportCity>' + AirportCity + '</AirportCity><ShowAll>' + showAll + '</ShowAll><UserId>' + UserId + '</UserId></Root>';
 
 
     if (errmsg == "" && connectionStatus == "online") {
@@ -402,17 +464,18 @@ function GetAWBDetailsForULD(ULDid) {
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function(Result) {
+            success: function (Result) {
                 Result = Result.d;
                 var xmlDoc = $.parseXML(Result);
                 $(ddlAWBNo).empty();
 
-                $(xmlDoc).find('Table2').each(function(index) {
+                $(xmlDoc).find('Table1').each(function (index) {
 
                     var AWBId;
                     var AWBNo;
                     AWBId = $(this).find('AWBID').text();
-                    AWBNo = $(this).find('AWBPrefix').text() + '-' + $(this).find('AWBNo').text();
+                    // AWBNo = $(this).find('AWBPrefix').text() + '-' + $(this).find('AWBNo').text();
+                    AWBNo = $(this).find('AWBNo').text();
 
                     if (index == 0) {
                         var newOption = $('<option></option>');
@@ -427,7 +490,7 @@ function GetAWBDetailsForULD(ULDid) {
                 });
 
             },
-            error: function(msg) {
+            error: function (msg) {
                 $("body").mLoading('hide');
                 $.alert('Data could not be loaded');
             }
@@ -443,6 +506,148 @@ function GetAWBDetailsForULD(ULDid) {
         $("body").mLoading('hide');
     }
 
+}
+
+
+function UpdateImportULDClose() {
+
+    if ($("#ddlULDNo option:selected").text() == 'Select') {
+        $("body").mLoading('hide');
+        errmsg = "Please select ULD No.</br>";
+        $.alert(errmsg);
+        return;
+    }
+
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+
+    var errmsg = "";
+
+    //inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo>' + ULDid + '</UlDSeqNo><AirportCity>' + AirportCity + '</AirportCity><ShowAll>' + showAll + '</ShowAll></Root>';
+    inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><ULDSeqNo>' + $('#ddlULDNo').val() + '</ULDSeqNo><UserId>' + window.localStorage.getItem("UserID") + '</UserId><AirportCity>' + AirportCity + '</AirportCity><IsConfirm>N</IsConfirm></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: "POST",
+            url: GHAserviceURL + "UpdateImportULDClose",
+            data: JSON.stringify({
+                'InputXML': inputxml,
+                'strUserId': UserId,
+                'strVal': deviceUUID
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (Result) {
+                Result = Result.d;
+                var xmlDoc = $.parseXML(Result);
+                $(ddlAWBNo).empty();
+                var newOption = $('<option></option>');
+                newOption.val(0).text('Select');
+                newOption.appendTo('#ddlAWBNo');
+                $(xmlDoc).find('Table').each(function (index) {
+
+                    Status = $(this).find('Status').text();
+                    StrMessage = $(this).find('StrMessage').text();
+                    if (Status == 'S') {
+                        $('#successMsg').text(StrMessage).css('color', 'green');
+
+                    } else if (Status == 'E') {
+
+                        $('#successMsg').text(StrMessage).css('color', 'red');
+                    } else if (Status == 'C') {
+
+                        if (confirm(StrMessage)) {
+                            // Save it!
+                            UpdateImportULDCloseOnconfirm();
+                            //console.log('Thing was saved to the database.');
+                        } else {
+                            // Do nothing!
+                            // console.log('Thing was not saved to the database.');
+                        }
+
+                    }
+
+                });
+
+            },
+            error: function (msg) {
+                $("body").mLoading('hide');
+                $.alert('Data could not be loaded');
+            }
+        });
+        return false;
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
+
+}
+
+
+function UpdateImportULDCloseOnconfirm() {
+    var connectionStatus = navigator.onLine ? 'online' : 'offline'
+
+    var errmsg = "";
+
+    //inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo>' + ULDid + '</UlDSeqNo><AirportCity>' + AirportCity + '</AirportCity><ShowAll>' + showAll + '</ShowAll></Root>';
+    inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><ULDSeqNo>' + $('#ddlULDNo').val() + '</ULDSeqNo><UserId>' + window.localStorage.getItem("UserID") + '</UserId><AirportCity>' + AirportCity + '</AirportCity><IsConfirm>Y</IsConfirm></Root>';
+
+    if (errmsg == "" && connectionStatus == "online") {
+        $.ajax({
+            type: "POST",
+            url: GHAImportFlightserviceURL + "UpdateImportULDClose",
+            data: JSON.stringify({
+                'InputXML': inputxml,
+            }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (Result) {
+                Result = Result.d;
+                var xmlDoc = $.parseXML(Result);
+                $(ddlAWBNo).empty();
+                var newOption = $('<option></option>');
+                newOption.val(0).text('Select');
+                newOption.appendTo('#ddlAWBNo');
+                $(xmlDoc).find('Table').each(function (index) {
+
+                    Status = $(this).find('Status').text();
+                    StrMessage = $(this).find('StrMessage').text();
+                    if (Status == 'S') {
+                        $('#successMsg').text(StrMessage).css('color', 'green');
+
+                    } else if (Status == 'E') {
+
+                        $('#successMsg').text(StrMessage).css('color', 'red');
+                    }
+
+                });
+
+            },
+            error: function (msg) {
+                $("body").mLoading('hide');
+                $.alert('Data could not be loaded');
+            }
+        });
+        return false;
+    }
+    else if (connectionStatus == "offline") {
+        $("body").mLoading('hide');
+        $.alert('No Internet Connection!');
+    }
+    else if (errmsg != "") {
+        $("body").mLoading('hide');
+        $.alert(errmsg);
+    }
+    else {
+        $("body").mLoading('hide');
+    }
 }
 
 function UpdateAWBDetails() {
@@ -479,6 +684,21 @@ function UpdateAWBDetails() {
             return;
         }
     } else {
+
+        if ($('#ddlULDNo').find(":selected").text() == 'Select') {
+            $("body").mLoading('hide');
+            errmsg = "Please select ULD No.</br>";
+            $.alert(errmsg);
+            return;
+        }
+
+        if ($('#ddlAWBNo').val() == '0' || $('#ddlAWBNo').val() == undefined || $('#ddlAWBNo').val() == null) {
+            $("body").mLoading('hide');
+            errmsg = "Please select AWB No.</br>";
+            $.alert(errmsg);
+            return;
+        }
+
         if ($('#txtArrivedPkgs').val() == "" && $('#txtDamagePkgs').val() == "") {
             errmsg = "Please enter Arrived pkgs";
             $.alert(errmsg);
@@ -518,7 +738,7 @@ function UpdateAWBDetails() {
     } else {
 
         // inputXML = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo>' + ULDSeqNo + '</UlDSeqNo><AWBId>' + $('#ddlAWBNo').find('option:selected').val() + '</AWBId><HAWBId>' + $('#ddlHAWBNo').find('option:selected').val() + '</HAWBId><NPR>' + $('#txtArrivedPkgs').val() + '</NPR><DMGPsc>' + $('#txtDamagePkgs').val() + '</DMGPsc><DMGWt>' + $('#txtDamageWt').val() + '</DMGWt><DMGCode>' + $('#ddlDamageType').find('option:selected').val() + '</DMGCode><UserId>' + window.localStorage.getItem("UserID") + '</UserId><AirportCity>' + AirportCity + '</AirportCity><IsOverride>' + isOverride + '</IsOverride></Root>';
-        inputXML = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo></UlDSeqNo><AWBId>' + $('#ddlAWBNo').find('option:selected').val() + '</AWBId><HAWBId></HAWBId><NPR>' + $('#txtArrivedPkgs').val() + '</NPR><DMGPsc>' + $('#txtDamagePkgs').val() + '</DMGPsc><DMGWt>' + $('#txtDamageWt').val() + '</DMGWt><DMGCode>' + $('#ddlDamageType').find('option:selected').val() + '</DMGCode><UserId>' + UserId + '</UserId><AirportCity>' + AirportCity + '</AirportCity><IsOverride>' + isOverride + '</IsOverride></Root>';
+        inputXML = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo>' + $('#ddlULDNo').val() + '</UlDSeqNo><AWBId>' + $('#ddlAWBNo').find('option:selected').val() + '</AWBId><HAWBId></HAWBId><NPR>' + $('#txtArrivedPkgs').val() + '</NPR><DMGPsc>' + $('#txtDamagePkgs').val() + '</DMGPsc><DMGWt>' + $('#txtDamageWt').val() + '</DMGWt><DMGCode>' + $('#ddlDamageType').find('option:selected').val() + '</DMGCode><UserId>' + UserId + '</UserId><AirportCity>' + AirportCity + '</AirportCity><IsOverride>' + isOverride + '</IsOverride></Root>';
 
         serviceName = 'SaveImportMaifestDetailsV';
     }
@@ -541,13 +761,13 @@ function UpdateAWBDetails() {
                     text: "Please Wait..",
                 });
             },
-            success: function(response) {
+            success: function (response) {
                 $("body").mLoading('hide');
                 response = response.d;
                 var xmlDoc = $.parseXML(response);
                 console.log('laaa')
                 console.log(xmlDoc)
-                $(xmlDoc).find('Table').each(function() {
+                $(xmlDoc).find('Table').each(function () {
 
                     if ($(this).find('StrMessage').text() != '')
                         $.alert($(this).find('StrMessage').text());
@@ -583,7 +803,7 @@ function UpdateAWBDetails() {
 
 
             },
-            error: function(msg) {
+            error: function (msg) {
                 $("body").mLoading('hide');
                 $.alert('Some error occurred while saving data');
             }
@@ -597,7 +817,7 @@ function UpdateAWBDetails() {
 
 
 function GetHAWBDetails(AWBid) {
-    debugger
+
     tieldAwbID = AWBid;
 
     if (chkShowAll.checked || selectedRowULDNo != '')
@@ -616,7 +836,7 @@ function GetHAWBDetails(AWBid) {
     var UldId = $("#ddlULDNo option:selected").val();
 
     //inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo>' + UldId + '</UlDSeqNo><AWBId>' + AWBid + '</AWBId><HAWBId></HAWBId><AirportCity>' + AirportCity + '</AirportCity><ShowAll>' + showAll + '</ShowAll></Root>';
-    inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo></UlDSeqNo><AWBId>' + AWBid + '</AWBId><HAWBId></HAWBId><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId><ShowAll>' + showAll + '</ShowAll></Root>';
+    inputxml = '<Root><FlightSeqNo>' + flightSeqNo + '</FlightSeqNo><UlDSeqNo>' + $('#ddlULDNo').val() + '</UlDSeqNo><AWBId>' + AWBid + '</AWBId><HAWBId></HAWBId><AirportCity>' + AirportCity + '</AirportCity><UserId>' + UserId + '</UserId><ShowAll>' + showAll + '</ShowAll></Root>';
 
 
     if (errmsg == "" && connectionStatus == "online") {
@@ -630,7 +850,7 @@ function GetHAWBDetails(AWBid) {
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function(Result) {
+            success: function (Result) {
                 Result = Result.d;
                 var xmlDoc = $.parseXML(Result);
 
@@ -641,12 +861,12 @@ function GetHAWBDetails(AWBid) {
 
                 var houseCount = 0;
 
-                $(xmlDoc).find('Table3').each(function(index) {
+                $(xmlDoc).find('Table3').each(function (index) {
                     houseCount++;
                 });
 
 
-                $(xmlDoc).find('Table3').each(function(index) {
+                $(xmlDoc).find('Table3').each(function (index) {
 
                     var HAWBId;
                     var HAWBNo;
@@ -658,7 +878,7 @@ function GetHAWBDetails(AWBid) {
                     newOption.appendTo('#ddlHAWBNo');
 
                     if (selectedRowHAWBNo != '') {
-                        $("#ddlHAWBNo option").each(function() {
+                        $("#ddlHAWBNo option").each(function () {
                             if ($(this).text() == selectedRowHAWBNo) {
                                 $(this).attr('selected', 'selected');
                                 var selectedHawbId = $(this).val();
@@ -671,7 +891,7 @@ function GetHAWBDetails(AWBid) {
                 });
 
 
-                $(xmlDoc).find('Table2').each(function() {
+                $(xmlDoc).find('Table2').each(function () {
 
                     $('#txtMnifestedPkg').val($(this).find('NPX').text());
 
@@ -697,7 +917,7 @@ function GetHAWBDetails(AWBid) {
                 });
 
             },
-            error: function(msg) {
+            error: function (msg) {
                 $("body").mLoading('hide');
                 $.alert('Data could not be loaded');
             }
@@ -783,11 +1003,11 @@ function GetHAWBLevelPiecesDetails(HAWBid) {
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            success: function(Result) {
+            success: function (Result) {
                 Result = Result.d;
                 var xmlDoc = $.parseXML(Result);
 
-                $(xmlDoc).find('Table4').each(function() {
+                $(xmlDoc).find('Table4').each(function () {
 
                     $('#txtMnifestedPkg').val($(this).find('NPX').text());
                     $('#txtReceivedPkgs').val($(this).find('NPR').text());
@@ -799,7 +1019,7 @@ function GetHAWBLevelPiecesDetails(HAWBid) {
                 });
 
             },
-            error: function(msg) {
+            error: function (msg) {
                 $("body").mLoading('hide');
                 $.alert('Data could not be loaded');
             }
@@ -833,7 +1053,7 @@ function EnableFoundCargo() {
         isFoundCargo = 'true';
 
         $('#ddlDamageType').empty();
-        $(xmlDamageType).find('Table3').each(function() {
+        $(xmlDamageType).find('Table3').each(function () {
 
             var AWBId;
             var AWBNo;
@@ -860,7 +1080,7 @@ function EnableFoundCargo() {
         $('#ddlDamageType').removeAttr('disabled');
 
         $('#ddlDamageType').empty();
-        $(xmlDamageType).find('Table3').each(function() {
+        $(xmlDamageType).find('Table3').each(function () {
 
             var AWBId;
             var AWBNo;
